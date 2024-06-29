@@ -257,6 +257,8 @@ def find_closest():
                 pop_up_ui.tPop.setText('No data available for the specified range criteria')
     except NameError:
         pass
+    except IndexError:
+        pass
 
 def fetch_markets_page_default():
     m_page_ui.lMPages.clear()
