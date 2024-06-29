@@ -258,7 +258,6 @@ def find_closest():
     except NameError:
         pass
 
-
 def fetch_markets_page_default():
     m_page_ui.lMPages.clear()
     arr = Utils.fetch_all_markets()

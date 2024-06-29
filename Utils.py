@@ -1,9 +1,15 @@
 import math
 import geocoder
 import psycopg2
-from main import conn
+# from main import conn
 
 EARTH_RADIUS_MI = 3959.191
+
+conn = psycopg2.connect(dbname='farmers_markets',
+                        host='localhost',
+                        user='marketsuser',
+                        password='Pa$$W0rd',
+                        port='5432')
 
 
 def do_select():
