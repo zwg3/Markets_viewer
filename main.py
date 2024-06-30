@@ -173,6 +173,7 @@ def show_detailed_info(item):
 
 
 def search():
+    error_msg = 'No data available for the specified criteria'
     search_ui.lSearch.clear()
     if search_ui.lnCity.text():
         search_param = search_ui.lnCity.text()
@@ -191,9 +192,13 @@ def search():
         except ValueError:
             pass
     elif search_ui.lnCoords.text():
-        find_closest()
+        try:
+            find_closest()
+        except Exception as e:
+            error_msg = str(e)
+
     if search_ui.lSearch.count() == 0:
-        pop_up_ui.tPop.setText('No data available for the specified criteria')
+        pop_up_ui.tPop.setText(error_msg)
         Pop_up.show()
     search_ui.lnState.clear()
     search_ui.lnCity.clear()
@@ -230,7 +235,7 @@ def fill_my_coords():
 def find_closest():
     limit = int(search_ui.sbLimit.text())
     try:
-        my_loc = [eval(i) for i in search_ui.lnCoords.text().split(', ')]
+        my_loc = [eval(i) for i in search_ui.lnCoords.text().strip().split(',')]
         data = Utils.do_select()
         temp_list = []
         res_list = []
@@ -254,11 +259,16 @@ def find_closest():
                 search_ui.lSearch.addItem(Utils.format_closest(i))
 
             else:
-                pop_up_ui.tPop.setText('No data available for the specified range criteria')
+                raise ValidationError('No data available for the specified range criteria')
     except NameError:
         pass
     except IndexError:
-        pass
+        raise ValidationError('Please enter the coordinate data like so: 59.9386, 30.3141')
+
+
+class ValidationError(Exception):
+    pass
+
 
 def fetch_markets_page_default():
     m_page_ui.lMPages.clear()

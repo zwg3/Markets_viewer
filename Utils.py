@@ -1,7 +1,6 @@
 import math
 import geocoder
 import psycopg2
-# from main import conn
 
 EARTH_RADIUS_MI = 3959.191
 
