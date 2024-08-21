@@ -22,13 +22,14 @@ conn = psycopg2.connect(dbname='farmers_markets',
 
 def do_delete():
     m_name = m_page_ui.lMPages.currentItem().text().split(',')[0][6:]
+    item_index = m_page_ui.lMPages.currentRow()
     cursor = conn.cursor()
-    cursor.execute("""DELETE 
+    cursor.execute("""DELETE
                       FROM markets
                       WHERE market_name = %(name)s;""", {'name': m_name})
     conn.commit()
     Del_pop_up.close()
-    m_page_ui.lMPages.clear()
+    m_page_ui.lMPages.takeItem(item_index)
 
 
 def delete_selected():
@@ -250,7 +251,7 @@ def find_closest():
             for i in range(len(temp_list)):
                 res_list.append((Utils.calc_distance(temp_list[i][1], my_loc), temp_list[i][0]))
         try:
-            res_list = sorted(res_list)[1:6]
+            res_list = sorted(res_list)[0:6]
         except IndexError:
             res_list = sorted(res_list)[1:]
 

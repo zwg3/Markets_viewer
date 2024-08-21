@@ -73,13 +73,15 @@ def log_user(user_data):
         file.write(user_data)
 
 
-def fetch_all_markets(order_param='reviews.score'):
+def fetch_all_markets(order_param='review_score_average'):
     cursor = conn.cursor()
-    cursor.execute(f'SELECT markets.market_name, street, cities.city, states.state_full, markets.zip, reviews.score '
+    cursor.execute(f'SELECT markets.market_name, street, cities.city, states.state_full, markets.zip, '
+                   f'ROUND(AVG(reviews.score), 1) as review_score_average '
                    f'FROM markets '
                    f'INNER JOIN cities ON markets.city = cities.city_id '
                    f'LEFT JOIN reviews ON markets.market_id = reviews.market_id '
                    f'INNER JOIN states ON markets.state = states.state_id '
+                   f'GROUP BY markets.market_name, street, cities.city, states.state_full, markets.zip '
                    f'ORDER BY {order_param};')
 
     raw = list(cursor.fetchall())

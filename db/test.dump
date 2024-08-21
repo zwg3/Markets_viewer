@@ -29642,7 +29642,8 @@ ALTER TABLE ONLY public.markets_categories
 --
 
 ALTER TABLE ONLY public.markets_categories
-    ADD CONSTRAINT markets_categories_markets_fk FOREIGN KEY (market_id) REFERENCES public.markets(market_id);
+ADD CONSTRAINT markets_categories_markets_fk FOREIGN KEY (market_id) REFERENCES public.markets(market_id) ON DELETE CASCADE;
+
 
 
 --
